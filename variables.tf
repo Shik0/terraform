@@ -28,3 +28,15 @@ variable "public_subnets" {
     "public_subnet_3" = 3
   }
 }
+
+variable "variables_sub_az" {
+  description = "AZ used Variables Subnet"
+  type = string
+  default = "us-east-1a"
+}
+
+variable "environment" {
+  description = "Environment for deployment"
+  type = string
+  default = "dev"
+}
