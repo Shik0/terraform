@@ -31,12 +31,12 @@ variable "public_subnets" {
 
 variable "variables_sub_az" {
   description = "AZ used Variables Subnet"
-  type = string
-  default = "us-east-1a"
+  type        = string
+  default     = "us-east-1a"
 }
 
 variable "environment" {
   description = "Environment for deployment"
-  type = string
-  default = "dev"
+  type        = string
+  default     = "dev"
 }
