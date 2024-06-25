@@ -140,7 +140,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
-
 resource "aws_instance" "web_server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
@@ -150,4 +149,13 @@ resource "aws_instance" "web_server" {
     Owner = local.team
     App = local.application
   }
+}
+
+resource "tls_private_key" "generated" {
+  algorithm = "RSA"
+}
+
+resource "local_file" "private_key_pem" {
+  content  = tls_private_key.generated.private_key_pem
+  filename = "MyAWSKey.pem"
 }
