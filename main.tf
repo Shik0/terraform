@@ -1,6 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  region                   = "us-east-1"
+  region = "us-east-1"
   # reading aws creds from remote backend workspace variables
   # shared_credentials_files = ["./aws_creds"]
 }
@@ -220,25 +220,51 @@ resource "aws_security_group" "ingress-ssh" {
   }
 }
 
+locals {
+  ingress_rules = [{
+    port        = 443
+    description = "Port 443"
+    },
+    {
+      port        = 80
+      description = "Port 80"
+    }
+  ]
+}
+
 resource "aws_security_group" "vpc-web" {
   name        = "vpc-web-${terraform.workspace}"
   vpc_id      = aws_vpc.vpc.id
   description = "Web Traffic"
-  ingress {
-    description = "Allow Port 80"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+
+
+  dynamic "ingress" {
+    for_each = local.ingress_rules
+
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
-  ingress {
-    description = "Allow Port 443"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description = "Allow Port 80"
+  #   from_port   = 80
+  #   to_port     = 80
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+
+  # ingress {
+  #   description = "Allow Port 443"
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   egress {
     description = "Allow all ip and ports outbound"
