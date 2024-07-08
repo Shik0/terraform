@@ -1,7 +1,8 @@
 # Configure the AWS Provider
 provider "aws" {
   region                   = "us-east-1"
-  shared_credentials_files = ["./aws_creds"]
+  # reading aws creds from remote backend workspace variables
+  # shared_credentials_files = ["./aws_creds"]
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -12,6 +13,12 @@ locals {
   team        = "api-mgmt-dev"
   application = "corp-api"
   server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
+}
+
+locals {
+  service_name = "Automation"
+  app_team     = "Cloud Team"
+  createdby    = "terraform"
 }
 
 #Define the VPC

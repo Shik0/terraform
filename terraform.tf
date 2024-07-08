@@ -1,7 +1,16 @@
 terraform {
 
-  backend "local" {
-    path = "./state/terraform.tfstate"
+  # backend "local" {
+  #   path = "./state/terraform.tfstate"
+  # }
+
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "mikayilov"
+    workspaces {
+      name = "mikayilov"
+    }
+
   }
 
   required_version = ">=1.0.0"
